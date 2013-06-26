@@ -91,7 +91,7 @@ if [[ "$1" == "--music" || "$1" == "-m" ]];
         rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME/Music" ~/
         echo -e "${RESET}"
     fi
-    if [[ "$2" == "-d" || "$2" == "--delete" ]]
+    if [[ "$2" == "-t" || "$2" == "--tidy" ]]
       then
         echo -e "${BOLD}${RED}${UNDERLINE} ## Backing up and deleting old Music ## ${RESET}"
       	echo -en "${RED}"
