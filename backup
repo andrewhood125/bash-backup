@@ -11,16 +11,56 @@ CYAN="\033[36m"
 RED="\033[31m"
 
 ## Config ##
+# default USER=username
 USER=username
-BACKUP_SERVER=iporhostname
+#default BACKUP_SERVER=remotehost
+BACKUP_SERVER=remotehost
+# default NAME="Username\'s MacBook\ Pro"
 # Must be escaped
 NAME="Username\'s\ MacBook\ Pro"
 
 echo -e "${BOLD}${YELLOW}${UNDERLINE}     ## CONFIG ##       ${RESET}"
-echo -e "${YELLOW}USERNAME	${UNDERLINE}${USER}${RESET}"
-echo -e "${YELLOW}SERVER		${UNDERLINE}${BACKUP_SERVER}${RESET}"
+echo -e "${YELLOW}USER		${UNDERLINE}${USER}${RESET}"
+echo -e "${YELLOW}BACKUP_SERVER	${UNDERLINE}${BACKUP_SERVER}${RESET}"
 echo -e "${YELLOW}NAME		${UNDERLINE}${NAME}${RESET}\n"
 
+
+
+## No Params given, display info. 
+if [[ "$1x" == "x" ]];
+  then
+    echo -e "${BOLD}Automates backup process for content in your home folder to a specified server. Before first run you must configure your username and server address.${RESET}\n"
+    echo -e "Usage ./backup {-m,--music|-p,--pictures|-a,--all} {-d,--delete}\n"
+    echo "-m,--music	Backup the entire Music folder."
+    echo "-p,--pictures	Backup the entire Pictures folder."
+    echo "-a,--all	Backup your entire home directory"
+    echo "-d,--delete	Delete files on the server that are no longer present on this machine."
+    echo -e "\nCopyright Andrew Hood, 2013\n"
+fi
+
+## No username set
+if [[ "${USER}" == "username" ]];
+  then
+    echo -e "${BOLD}${RED}USER must be set. Edit ./backup with your favorite editor and set USER in config.${RESET}"
+fi
+
+## No host set
+if [[ "${BACKUP_SERVER}" == "remotehost" ]];
+  then
+    echo -e "${BOLD}${RED}BACKUP_SERVER must be set. Edit ./backup with your favorite editor and set BACKUP_USER in config.${RESET}"
+fi
+
+## No NAME set
+if [[ "${NAME}" == "Username\'s\ MacBook\ Pro" ]];
+  then
+    echo -e "${BOLD}${RED}NAME must be set. Edit ./backup with your favorite editor and set NAME in config.${RESET}"
+fi
+
+## EXIT if USER BACKUP_SERVER or NAME is not set. 
+if [[ "${USER}" == "username" || "${BACKUP_SERVER}" == "remotehost" || "${NAME}" == "Username\'s\ MacBook\ Pro" ]];
+  then
+    exit 1
+fi
 
 ################
 
@@ -72,16 +112,6 @@ if [[ "$1" == "--all" || "$1" == "-a" ]];
     fi
 fi
 
-if [[ "$1x" == "x" ]];
-  then
-    echo -e "${BOLD}Automates backup process for content in your home folder to a specified server. Before first run you must configure your username and server address.${RESET}\n"
-    echo -e "Usage ./backup {-m,--music|-p,--pictures|-a,--all} {-d,--delete}\n"
-    echo "-m,--music	Backup the entire Music folder."
-    echo "-p,--pictures	Backup the entire Pictures folder."
-    echo "-a,--all	Backup your entire home directory"
-    echo "-d,--delete	Delete files on the server that are no longer present on this machine."
-    echo -e "\nCopyright Andrew Hood, 2013\n"
-fi
 
 
 
