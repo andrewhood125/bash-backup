@@ -3,14 +3,16 @@
 ## Config Section - REPLACE THESE VALUES WITH YOURS  ##
 
 # default USER=username
-USER=username
+USER=ahood
 
 #default BACKUP_SERVER=remotehost
-BACKUP_SERVER=remotehost
+BACKUP_SERVER=direct.memphisacm.com
 
 # default NAME="Username\'s MacBook\ Pro"; Must be escaped.
-NAME="Username\'s\ MacBook\ Pro"
+NAME="Andrew\'s\ MacBook\ Pro"
 
+# default RSYNC_OPTIONS="-avh --progress"; These options are passed directly to rsync.
+RSYNC_OPTIONS="-avh --progress"
 ## END CONFIG SECTION ##
 
 ## Colors ##
@@ -20,6 +22,7 @@ UNDERLINE="\033[4m"
 UNDERLINE_OFF="\033[24m"
 YELLOW="\033[33m"
 GREEN="\033[32m"
+MAGENTA="\033[35m"
 CYAN="\033[36m"
 RED="\033[31m"
 ## END COLORS ##
@@ -76,49 +79,76 @@ fi
 ## BEGIN BACKUP PROGRAM ##
 if [[ "$1" == "--music" || "$1" == "-m" ]];
   then
+    if [[ "$2" == "-r" || "$2" == "--restore" ]]
+      then
+        echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Restoring Music to your computer ##${RESET}"
+        echo -en "${MAGENTA}"
+        rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME/Music" ~/
+        echo -e "${RESET}"
+    fi
     if [[ "$2" == "-d" || "$2" == "--delete" ]]
       then
         echo -e "${BOLD}${RED}${UNDERLINE} ## Backing up and deleting old Music ## ${RESET}"
-	echo -en "${RED}"
-	rsync -avh --progress  --delete  ~/Music $USER@$BACKUP_SERVER:"~/$NAME/"	
-	echo -e "${RESET}"
-      else
+      	echo -en "${RED}"
+      	rsync ${RSYNC_OPTIONS}  --delete  ~/Music $USER@$BACKUP_SERVER:"~/$NAME/"	
+      	echo -e "${RESET}"  
+    fi
+    if [[ "$2x" == "x" ]] 
+      then
         echo -e "${BOLD}${CYAN}${UNDERLINE} ## Backing up Music ## ${RESET}"
-	echo -en "${CYAN}"
-	rsync -avh --progress  ~/Music $USER@$BACKUP_SERVER:"~/$NAME/"	
-	echo -e "${RESET}"
+        echo -en "${CYAN}"
+        rsync ${RSYNC_OPTIONS}  ~/Music $USER@$BACKUP_SERVER:"~/$NAME/"  
+        echo -e "${RESET}"
     fi
 fi
 
 if [[ "$1" == "--pictures" || "$1" == "-p" ]];
   then
+    if [[ "$2" == "-r" || "$2" == "--restore" ]]
+      then
+        echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Restoring Pictures to your computer ##${RESET}"
+        echo -en "${MAGENTA}"
+        rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME/Pictures" ~/
+        echo -e "${RESET}"
+    fi
     if [[ "$2" == "-d" || "$2" == "--delete" ]]
       then
         echo -e "${BOLD}${RED}${UNDERLINE} ## Backing up and deleting old Pictures ## ${RESET}"
-	echo -en "${RED}"
-	rsync -avh --progress  --delete  ~/Pictures $USER@$BACKUP_SERVER:"~/$NAME/"	
-	echo -e "${RESET}"
-      else
+	      echo -en "${RED}"
+	      rsync ${RSYNC_OPTIONS}  --delete  ~/Pictures $USER@$BACKUP_SERVER:"~/$NAME/"	
+	      echo -e "${RESET}"
+    fi
+    if [[ "$2x" == "x" ]] 
+      then
         echo -e "${BOLD}${CYAN}${UNDERLINE} ## Backing up Pictures ## ${RESET}"
-	echo -en "${CYAN}"
-	rsync -avh --progress  ~/Pictures $USER@$BACKUP_SERVER:"~/$NAME/"	
-	echo -e "${RESET}"
+        echo -en "${CYAN}"
+        rsync ${RSYNC_OPTIONS}  ~/Pictures $USER@$BACKUP_SERVER:"~/$NAME/" 
+        echo -e "${RESET}"
     fi
 fi
 
 if [[ "$1" == "--all" || "$1" == "-a" ]];
   then
+    if [[ "$2" == "-r" || "$2" == "--restore" ]]
+      then
+        echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Restoring everything to your computer ##${RESET}"
+	      echo -en "${MAGENTA}"
+        rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME/" ~/
+        echo -e "${RESET}"
+    fi
     if [[ "$2" == "-d" || "$2" == "--delete" ]]
       then
         echo -e "${BOLD}${RED}${UNDERLINE} ## Backing up and deleting old Content ## ${RESET}"
-	echo -en "${RED}"
-	rsync -avh --progress --exclude 'Library' --exclude '.MacOSX' --delete  ~/ $USER@$BACKUP_SERVER:"~/$NAME/"
-	echo -e "${RESET}"
-      else
+      	echo -en "${RED}"
+      	rsync ${RSYNC_OPTIONS} --exclude 'Library' --exclude '.MacOSX' --delete  ~/ $USER@$BACKUP_SERVER:"~/$NAME/"
+      	echo -e "${RESET}"
+    fi
+    if [[ "$2x" == "x" ]] 
+      then
         echo -e "${BOLD}${CYAN}${UNDERLINE} ## Backing up everything ## ${RESET}"
-	echo -en "${CYAN}"
-	rsync -avh --progress --exclude 'Library' --exclude '.MacOSX'  ~/ $USER@$BACKUP_SERVER:"~/$NAME/"	
-	echo -e "${RESET}"
+      	echo -en "${CYAN}"
+      	rsync ${RSYNC_OPTIONS} --exclude 'Library' --exclude '.MacOSX'  ~/ $USER@$BACKUP_SERVER:"~/$NAME/"	
+      	echo -e "${RESET}"
     fi
 fi
 
