@@ -213,7 +213,7 @@ if [[ "$1" == "--all" || "$1" == "-a" ]];
       then
         echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Encrypting Home Folder ## ${RESET}"
         echo -en "${MAGENTA}"
-        zip -ejr /tmp/all.zip ~/
+        zip -ejr -x \*Library\* \*.MacOSX\* /tmp/all.zip ~/
         rsync ${RSYNC_OPTIONS} /tmp/all.zip $USER@$BACKUP_SERVER:"~/$NAME-encrypted/" 
         rm /tmp/all.zip
         echo -e "${RESET}"
