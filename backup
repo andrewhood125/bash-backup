@@ -120,7 +120,7 @@ if [[ "$1" == "--music" || "$1" == "-m" ]];
       then
         echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Restoring Encrypted Music ## ${RESET}"
         echo -en "${MAGENTA}"
-        rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME/music.zip" /tmp/
+        rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME-encrypted/music.zip" /tmp/
         unzip /tmp/music.zip 
         echo -e "${RESET}"
     fi
@@ -171,7 +171,7 @@ if [[ "$1" == "--pictures" || "$1" == "-p" ]];
       then
         echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Restoring Encrypted Pictures ## ${RESET}"
         echo -en "${MAGENTA}"
-        rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME/pictures.zip" /tmp/pictures.zip
+        rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME-encrypted/pictures.zip" /tmp/pictures.zip
         unzip /tmp/pictures.zip
         echo -e "${RESET}"
     fi
@@ -222,7 +222,7 @@ if [[ "$1" == "--all" || "$1" == "-a" ]];
       then
         echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Restoring Encrypted Home Directory ## ${RESET}"
         echo -en "${MAGENTA}"
-        rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME/all.zip" /tmp/all.zip
+        rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME-encrypted/all.zip" /tmp/all.zip
         unzip /tmp/all.zip
         echo -e "${RESET}"
     fi
