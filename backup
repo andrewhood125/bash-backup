@@ -63,7 +63,8 @@ if [[ "$1x" == "x" ]];
     echo "-p,--pictures	Backup the entire Pictures folder."
     echo "-a,--all	Backup your entire home directory"
     echo "-b,--backup   Backup files on this computer to the server. This is the default option."
-    echo "-d,--delete	Delete files on the server that are no longer present on this machine."
+    echo "-t,--tidy	  Delete files on the server that are no longer present on this machine."
+    echo "-w,--wipe   Delete files from server."
     echo "-r,--restore 	Restore files that exist on the server but are no longer present on this machine."
     echo -e "\nCopyright Andrew Hood, 2013\n"
 fi
@@ -95,6 +96,15 @@ if [[ "$1" == "--music" || "$1" == "-m" ]];
       	rsync ${RSYNC_OPTIONS}  --delete  ~/Music $USER@$BACKUP_SERVER:"~/$NAME/"	
       	echo -e "${RESET}"  
     fi
+    if [[ "$2" == "-w" || "$2" == "--wipe" ]]
+      then
+        echo -e "${BOLD}${RED}${UNDERLINE} ## DELETING ALL MUSIC FROM SERVER ## ${RESET}"
+        echo -en "${RED}Interrupt to cancel within 5 seconds. control+c"
+        sleep 5
+        echo "WIPING MUSIC"
+        ssh $USER@$BACKUP_SERVER "rm -rf $NAME/Music"
+        echo -e "${RESET}"
+    fi
     if [[ "$2" == "-b" || "$2" == "--backup" || "$2x" == "x" ]] 
       then
         echo -e "${BOLD}${CYAN}${UNDERLINE} ## Backing up Music ## ${RESET}"
@@ -113,12 +123,21 @@ if [[ "$1" == "--pictures" || "$1" == "-p" ]];
         rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME/Pictures" ~/
         echo -e "${RESET}"
     fi
-    if [[ "$2" == "-d" || "$2" == "--delete" ]]
+    if [[ "$2" == "-t" || "$2" == "--tidy" ]]
       then
         echo -e "${BOLD}${RED}${UNDERLINE} ## Backing up and deleting old Pictures ## ${RESET}"
 	      echo -en "${RED}"
 	      rsync ${RSYNC_OPTIONS}  --delete  ~/Pictures $USER@$BACKUP_SERVER:"~/$NAME/"	
 	      echo -e "${RESET}"
+    fi
+    if [[ "$2" == "-w" || "$2" == "--wipe" ]]
+      then
+        echo -e "${BOLD}${RED}${UNDERLINE} ## DELETING ALL PICTURES FROM SERVER ## ${RESET}"
+        echo -en "${RED}Interrupt to cancel within 5 seconds. control+c"
+        sleep 5
+        echo "WIPING PICTURES"
+        ssh $USER@$BACKUP_SERVER "rm -rf $NAME/Pictures"
+        echo -e "${RESET}"
     fi
     if [[ "$2" == "-b" || "$2" == "--backup" || "$2x" == "x" ]] 
       then
@@ -138,11 +157,20 @@ if [[ "$1" == "--all" || "$1" == "-a" ]];
         rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME/" ~/
         echo -e "${RESET}"
     fi
-    if [[ "$2" == "-d" || "$2" == "--delete" ]]
+    if [[ "$2" == "-t" || "$2" == "--tidy" ]]
       then
         echo -e "${BOLD}${RED}${UNDERLINE} ## Backing up and deleting old Content ## ${RESET}"
-      	echo -en "${RED}"
-      	rsync ${RSYNC_OPTIONS} --exclude 'Library' --exclude '.MacOSX' --delete  ~/ $USER@$BACKUP_SERVER:"~/$NAME/"
+        echo -en "${RED}"
+        rsync ${RSYNC_OPTIONS} --exclude 'Library' --exclude '.MacOSX' --delete  ~/ $USER@$BACKUP_SERVER:"~/$NAME/"
+        echo -e "${RESET}"
+    fi
+    if [[ "$2" == "-w" || "$2" == "--wipe" ]]
+      then
+        echo -e "${BOLD}${RED}${UNDERLINE} ## DELETING ALL DATA FROM SERVER ## ${RESET}"
+      	echo -en "${RED}Interrupt to cancel within 5 seconds. control+c"
+        sleep 5
+        echo "WIPING DATA"
+      	ssh $USER@$BACKUP_SERVER "rm -rf $NAME"
       	echo -e "${RESET}"
     fi
     if [[ "$2" == "-b" || "$2" == "--backup" || "$2x" == "x" ]] 
