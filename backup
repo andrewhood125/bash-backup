@@ -111,7 +111,7 @@ if [[ "$1" == "--music" || "$1" == "-m" ]];
       then
         echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Encrypting Music ## ${RESET}"
         echo -en "${MAGENTA}"
-        zip -er /tmp/music.zip ~/
+        zip -er /tmp/music.zip ~/Music
         rsync ${RSYNC_OPTIONS} /tmp/music.zip $USER@$BACKUP_SERVER:"~/$NAME/"
         rm /tmp/music.zip  
         echo -e "${RESET}"
