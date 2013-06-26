@@ -1,5 +1,18 @@
 #! /bin/bash
 
+## Config Section - REPLACE THESE VALUES WITH YOURS  ##
+
+# default USER=username
+USER=username
+
+#default BACKUP_SERVER=remotehost
+BACKUP_SERVER=remotehost
+
+# default NAME="Username\'s MacBook\ Pro"; Must be escaped.
+NAME="Username\'s\ MacBook\ Pro"
+
+## END CONFIG SECTION ##
+
 ## Colors ##
 RESET="\033[0m"
 BOLD="\033[1m"
@@ -9,27 +22,39 @@ YELLOW="\033[33m"
 GREEN="\033[32m"
 CYAN="\033[36m"
 RED="\033[31m"
+## END COLORS ##
 
-## Config ##
-# default USER=username
-USER=username
-#default BACKUP_SERVER=remotehost
-BACKUP_SERVER=remotehost
-# default NAME="Username\'s MacBook\ Pro"
-# Must be escaped
-NAME="Username\'s\ MacBook\ Pro"
 
+## Check if Config Section has been edited ##
 echo -e "${BOLD}${YELLOW}${UNDERLINE}     ## CONFIG ##       ${RESET}"
-echo -e "${YELLOW}USER		${UNDERLINE}${USER}${RESET}"
-echo -e "${YELLOW}BACKUP_SERVER	${UNDERLINE}${BACKUP_SERVER}${RESET}"
-echo -e "${YELLOW}NAME		${UNDERLINE}${NAME}${RESET}\n"
+## Check for USER
+if [[ "${USER}" == "username" ]];
+  then
+    echo -e "${BOLD}${RED}USER must be set. Edit ./backup and change the value of USER in Config section.${RESET}"
+  else
+    echo -e "${YELLOW}USER		${UNDERLINE}${USER}${RESET}"
+fi
+## Check for BACKUP_SERVER
+if [[ "${BACKUP_SERVER}" == "remotehost" ]];
+  then
+    echo -e "${BOLD}${RED}BACKUP_SERVER must be set. Edit ./backup and change the value of BACKUP_USER in Config section.${RESET}"
+  else 
+    echo -e "${YELLOW}BACKUP_SERVER	${UNDERLINE}${BACKUP_SERVER}${RESET}"
+fi
+## Check for NAME
+if [[ "${NAME}" == "Username\'s\ MacBook\ Pro" ]];
+  then
+    echo -e "${BOLD}${RED}NAME must be set. Edit ./backup and change the value of NAME in Config section.${RESET}"
+  else
+    echo -e "${YELLOW}NAME		${UNDERLINE}${NAME}${RESET}"
+fi
+## END CONFIG CHECK ##
 
 
-
-## No Params given, display info. 
+## ECHO USAGE IF NO PARAMS ##
 if [[ "$1x" == "x" ]];
   then
-    echo -e "${BOLD}Automates backup process for content in your home folder to a specified server. Before first run you must configure your username and server address.${RESET}\n"
+    echo -e "\n${BOLD}Automates backup process for content in your home folder to a specified server. Before first run you must configure your username and server address.${RESET}\n"
     echo -e "Usage ./backup {-m,--music|-p,--pictures|-a,--all} {-d,--delete}\n"
     echo "-m,--music	Backup the entire Music folder."
     echo "-p,--pictures	Backup the entire Pictures folder."
@@ -37,33 +62,18 @@ if [[ "$1x" == "x" ]];
     echo "-d,--delete	Delete files on the server that are no longer present on this machine."
     echo -e "\nCopyright Andrew Hood, 2013\n"
 fi
+## END USAGE ##
 
-## No username set
-if [[ "${USER}" == "username" ]];
-  then
-    echo -e "${BOLD}${RED}USER must be set. Edit ./backup with your favorite editor and set USER in config.${RESET}"
-fi
 
-## No host set
-if [[ "${BACKUP_SERVER}" == "remotehost" ]];
-  then
-    echo -e "${BOLD}${RED}BACKUP_SERVER must be set. Edit ./backup with your favorite editor and set BACKUP_USER in config.${RESET}"
-fi
-
-## No NAME set
-if [[ "${NAME}" == "Username\'s\ MacBook\ Pro" ]];
-  then
-    echo -e "${BOLD}${RED}NAME must be set. Edit ./backup with your favorite editor and set NAME in config.${RESET}"
-fi
-
-## EXIT if USER BACKUP_SERVER or NAME is not set. 
+## EXIT if USER BACKUP_SERVER or NAME is not set. ## 
 if [[ "${USER}" == "username" || "${BACKUP_SERVER}" == "remotehost" || "${NAME}" == "Username\'s\ MacBook\ Pro" ]];
   then
+    echo -e "${BOLD}${RED}Config incomplete, exiting.${RESET}";
     exit 1
 fi
+## END EXIT IF CONFIG INCOMPLETE ##
 
-################
-
+## BEGIN BACKUP PROGRAM ##
 if [[ "$1" == "--music" || "$1" == "-m" ]];
   then
     if [[ "$2" == "-d" || "$2" == "--delete" ]]
@@ -112,6 +122,6 @@ if [[ "$1" == "--all" || "$1" == "-a" ]];
     fi
 fi
 
-
+## END BACKUP PROGRAM ## 
 
 
