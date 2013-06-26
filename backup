@@ -145,7 +145,7 @@ if [[ "$1" == "--all" || "$1" == "-a" ]];
       	rsync ${RSYNC_OPTIONS} --exclude 'Library' --exclude '.MacOSX' --delete  ~/ $USER@$BACKUP_SERVER:"~/$NAME/"
       	echo -e "${RESET}"
     fi
-    if [[ "$2" == "-b" || "$2" == "--backup" || $2x" == "x" ]] 
+    if [[ "$2" == "-b" || "$2" == "--backup" || "$2x" == "x" ]] 
       then
         echo -e "${BOLD}${CYAN}${UNDERLINE} ## Backing up everything ## ${RESET}"
       	echo -en "${CYAN}"
