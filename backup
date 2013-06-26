@@ -58,11 +58,13 @@ fi
 if [[ "$1x" == "x" ]];
   then
     echo -e "\n${BOLD}Automates backup process for content in your home folder to a specified server. Before first run you must configure your username and server address.${RESET}\n"
-    echo -e "Usage ./backup {-m,--music|-p,--pictures|-a,--all} {-d,--delete}\n"
+    echo -e "Usage ./backup {-m,--music|-p,--pictures|-a,--all} {-b,--backup|-d,--delete|-r,--restore}\n"
     echo "-m,--music	Backup the entire Music folder."
     echo "-p,--pictures	Backup the entire Pictures folder."
     echo "-a,--all	Backup your entire home directory"
+    echo "-b,--backup   Backup files on this computer to the server. This is the default option."
     echo "-d,--delete	Delete files on the server that are no longer present on this machine."
+    echo "-r,--restore 	Restore files that exist on the server but are no longer present on this machine."
     echo -e "\nCopyright Andrew Hood, 2013\n"
 fi
 ## END USAGE ##
@@ -93,7 +95,7 @@ if [[ "$1" == "--music" || "$1" == "-m" ]];
       	rsync ${RSYNC_OPTIONS}  --delete  ~/Music $USER@$BACKUP_SERVER:"~/$NAME/"	
       	echo -e "${RESET}"  
     fi
-    if [[ "$2x" == "x" ]] 
+    if [[ "$2" == "-b" || "$2" == "--backup" || "$2x" == "x" ]] 
       then
         echo -e "${BOLD}${CYAN}${UNDERLINE} ## Backing up Music ## ${RESET}"
         echo -en "${CYAN}"
@@ -118,7 +120,7 @@ if [[ "$1" == "--pictures" || "$1" == "-p" ]];
 	      rsync ${RSYNC_OPTIONS}  --delete  ~/Pictures $USER@$BACKUP_SERVER:"~/$NAME/"	
 	      echo -e "${RESET}"
     fi
-    if [[ "$2x" == "x" ]] 
+    if [[ "$2" == "-b" || "$2" == "--backup" || "$2x" == "x" ]] 
       then
         echo -e "${BOLD}${CYAN}${UNDERLINE} ## Backing up Pictures ## ${RESET}"
         echo -en "${CYAN}"
@@ -143,7 +145,7 @@ if [[ "$1" == "--all" || "$1" == "-a" ]];
       	rsync ${RSYNC_OPTIONS} --exclude 'Library' --exclude '.MacOSX' --delete  ~/ $USER@$BACKUP_SERVER:"~/$NAME/"
       	echo -e "${RESET}"
     fi
-    if [[ "$2x" == "x" ]] 
+    if [[ "$2" == "-b" || "$2" == "--backup" || $2x" == "x" ]] 
       then
         echo -e "${BOLD}${CYAN}${UNDERLINE} ## Backing up everything ## ${RESET}"
       	echo -en "${CYAN}"
