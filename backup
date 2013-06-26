@@ -3,13 +3,13 @@
 ## Config Section - REPLACE THESE VALUES WITH YOURS  ##
 
 # default USER=username
-USER=ahood
+USER=username
 
 #default BACKUP_SERVER=remotehost
-BACKUP_SERVER=direct.memphisacm.com
+BACKUP_SERVER=remotehost
 
 # default NAME="Username\'s MacBook\ Pro"; Must be escaped.
-NAME="Andrew\'s\ MacBook\ Pro"
+NAME="Username\'s\ MacBook\ Pro"
 
 # default RSYNC_OPTIONS="-avh --progress"; These options are passed directly to rsync.
 RSYNC_OPTIONS="-avh --progress"
