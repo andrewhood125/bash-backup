@@ -197,7 +197,7 @@ if [[ "$1" == "--all" || "$1" == "-a" ]];
       then
         echo -e "${BOLD}${RED}${UNDERLINE} ## Backing up and deleting old Content ## ${RESET}"
         echo -en "${RED}"
-        rsync ${RSYNC_OPTIONS} --exclude 'Library' --exclude '.MacOSX' --delete  ~/ $USER@$BACKUP_SERVER:"~/$NAME/"
+        rsync ${RSYNC_OPTIONS}  --exclude '.MacOSX' --delete  ~/ $USER@$BACKUP_SERVER:"~/$NAME/"
         echo -e "${RESET}"
     fi
     if [[ "$2" == "-w" || "$2" == "--wipe" ]]
@@ -213,7 +213,7 @@ if [[ "$1" == "--all" || "$1" == "-a" ]];
       then
         echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Encrypting Home Folder ## ${RESET}"
         echo -en "${MAGENTA}"
-        zip -ejr -x \*Library\* \*.MacOSX\* /tmp/all.zip ~/
+        zip -ejr /tmp/all.zip ~/
         rsync ${RSYNC_OPTIONS} /tmp/all.zip $USER@$BACKUP_SERVER:"~/$NAME-encrypted/" 
         rm /tmp/all.zip
         echo -e "${RESET}"
@@ -230,7 +230,7 @@ if [[ "$1" == "--all" || "$1" == "-a" ]];
       then
         echo -e "${BOLD}${CYAN}${UNDERLINE} ## Backing up everything ## ${RESET}"
       	echo -en "${CYAN}"
-      	rsync ${RSYNC_OPTIONS} --exclude 'Library' --exclude '.MacOSX'  ~/ $USER@$BACKUP_SERVER:"~/$NAME/"	
+      	rsync ${RSYNC_OPTIONS} --exclude '.MacOSX'  ~/ $USER@$BACKUP_SERVER:"~/$NAME/"	
       	echo -e "${RESET}"
     fi
 fi
