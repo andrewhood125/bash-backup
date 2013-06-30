@@ -105,24 +105,24 @@ if [[ "$1" == "-w" || "$2" == "--wipe" ]]
   	ssh $USER@$BACKUP_SERVER "rm -rf $NAME"
   	echo -e "${RESET}"
 fi
-if [[ "$1" == "-e" || "$2" == "--encrypt" ]] 
-  then
-    echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Encrypting Home Folder ## ${RESET}"
-    echo -en "${MAGENTA}"
-    zip -ejr /tmp/all.zip ~/
-    rsync ${RSYNC_OPTIONS} /tmp/all.zip $USER@$BACKUP_SERVER:"~/$NAME-encrypted/" 
-    rm /tmp/all.zip
-    echo -e "${RESET}"
-fi
-if [[ "$1" == "-d" || "$2" == "--decrypt" ]] 
-  then
-    echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Restoring Encrypted Home Directory ## ${RESET}"
-    echo -en "${MAGENTA}"
-    rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME-encrypted/all.zip" /tmp/all.zip
-    unzip /tmp/all.zip
-    echo -e "${RESET}"
-fi
-if [[ "$1" == "-b" || "$2" == "--backup" || "$2x" == "x" ]] 
+# if [[ "$1" == "-e" || "$2" == "--encrypt" ]] 
+#  then
+#    echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Encrypting Home Folder ## ${RESET}"
+#    echo -en "${MAGENTA}"
+#    zip -ejr /tmp/all.zip ~/
+#    rsync ${RSYNC_OPTIONS} /tmp/all.zip $USER@$BACKUP_SERVER:"~/$NAME-encrypted/" 
+#    rm /tmp/all.zip
+#    echo -e "${RESET}"
+#fi
+#if [[ "$1" == "-d" || "$2" == "--decrypt" ]] 
+#  then
+#    echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Restoring Encrypted Home Directory ## ${RESET}"
+#    echo -en "${MAGENTA}"
+#    rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME-encrypted/all.zip" /tmp/all.zip
+#    unzip /tmp/all.zip
+#    echo -e "${RESET}"
+#fi
+if [[ "$1" == "-b" || "$2" == "--backup" ]] 
   then
     echo -e "${BOLD}${CYAN}${UNDERLINE} ## Backing up everything ## ${RESET}"
   	echo -en "${CYAN}"
