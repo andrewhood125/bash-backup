@@ -81,158 +81,53 @@ if [[ "${USER}" == "username" || "${BACKUP_SERVER}" == "remotehost" || "${NAME}"
 fi
 ## END EXIT IF CONFIG INCOMPLETE ##
 
-## BEGIN BACKUP PROGRAM ##
-if [[ "$1" == "--music" || "$1" == "-m" ]];
-  then
-    if [[ "$2" == "-r" || "$2" == "--restore" ]]
-      then
-        echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Restoring Music to your computer ##${RESET}"
-        echo -en "${MAGENTA}"
-        rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME/Music" ~/
-        echo -e "${RESET}"
-    fi
-    if [[ "$2" == "-t" || "$2" == "--tidy" ]]
-      then
-        echo -e "${BOLD}${RED}${UNDERLINE} ## Backing up and deleting old Music ## ${RESET}"
-      	echo -en "${RED}"
-      	rsync ${RSYNC_OPTIONS}  --delete  ~/Music $USER@$BACKUP_SERVER:"~/$NAME/"	
-      	echo -e "${RESET}"  
-    fi
-    if [[ "$2" == "-w" || "$2" == "--wipe" ]]
-      then
-        echo -e "${BOLD}${RED}${UNDERLINE} ## DELETING ALL MUSIC FROM SERVER ## ${RESET}"
-        echo -en "${RED}Interrupt to cancel within 5 seconds. control+c"
-        sleep 5
-        echo "WIPING MUSIC"
-        ssh $USER@$BACKUP_SERVER "rm -rf $NAME/Music"
-        echo -e "${RESET}"
-    fi
-    if [[ "$2" == "-e" || "$2" == "--encrypt" ]] 
-      then
-        echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Encrypting Music ## ${RESET}"
-        echo -en "${MAGENTA}"
-        zip -er /tmp/music.zip ~/Music
-        rsync ${RSYNC_OPTIONS} /tmp/music.zip $USER@$BACKUP_SERVER:"~/$NAME-encrypted/"
-        rm /tmp/music.zip  
-        echo -e "${RESET}"
-    fi
-    if [[ "$2" == "-d" || "$2" == "--decrypt" ]] 
-      then
-        echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Restoring Encrypted Music ## ${RESET}"
-        echo -en "${MAGENTA}"
-        rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME-encrypted/music.zip" /tmp/
-        unzip /tmp/music.zip 
-        echo -e "${RESET}"
-    fi
-    if [[ "$2" == "-b" || "$2" == "--backup" || "$2x" == "x" ]] 
-      then
-        echo -e "${BOLD}${CYAN}${UNDERLINE} ## Backing up Music ## ${RESET}"
-        echo -en "${CYAN}"
-        rsync ${RSYNC_OPTIONS}  ~/Music $USER@$BACKUP_SERVER:"~/$NAME/"  
-        echo -e "${RESET}"
-    fi
-fi
 
-if [[ "$1" == "--pictures" || "$1" == "-p" ]];
+if [[ "$1" == "-r" || "$2" == "--restore" ]]
   then
-    if [[ "$2" == "-r" || "$2" == "--restore" ]]
-      then
-        echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Restoring Pictures to your computer ##${RESET}"
-        echo -en "${MAGENTA}"
-        rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME/Pictures" ~/
-        echo -e "${RESET}"
-    fi
-    if [[ "$2" == "-t" || "$2" == "--tidy" ]]
-      then
-        echo -e "${BOLD}${RED}${UNDERLINE} ## Backing up and deleting old Pictures ## ${RESET}"
-	      echo -en "${RED}"
-	      rsync ${RSYNC_OPTIONS}  --delete  ~/Pictures $USER@$BACKUP_SERVER:"~/$NAME/"	
-	      echo -e "${RESET}"
-    fi
-    if [[ "$2" == "-w" || "$2" == "--wipe" ]]
-      then
-        echo -e "${BOLD}${RED}${UNDERLINE} ## DELETING ALL PICTURES FROM SERVER ## ${RESET}"
-        echo -en "${RED}Interrupt to cancel within 5 seconds. control+c"
-        sleep 5
-        echo "WIPING PICTURES"
-        ssh $USER@$BACKUP_SERVER "rm -rf $NAME/Pictures"
-        echo -e "${RESET}"
-    fi
-    if [[ "$2" == "-e" || "$2" == "--encrypt" ]] 
-      then
-        echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Encrypting Music ## ${RESET}"
-        echo -en "${MAGENTA}"
-        zip -er /tmp/music.zip ~/Pictures
-        rsync ${RSYNC_OPTIONS} /tmp/pictures.zip $USER@$BACKUP_SERVER:"~/$NAME-encrypted/"
-        rm /tmp/pictures.zip  
-        echo -e "${RESET}"
-    fi
-    if [[ "$2" == "-d" || "$2" == "--decrypt" ]] 
-      then
-        echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Restoring Encrypted Pictures ## ${RESET}"
-        echo -en "${MAGENTA}"
-        rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME-encrypted/pictures.zip" /tmp/pictures.zip
-        unzip /tmp/pictures.zip
-        echo -e "${RESET}"
-    fi
-    if [[ "$2" == "-b" || "$2" == "--backup" || "$2x" == "x" ]] 
-      then
-        echo -e "${BOLD}${CYAN}${UNDERLINE} ## Backing up Pictures ## ${RESET}"
-        echo -en "${CYAN}"
-        rsync ${RSYNC_OPTIONS}  ~/Pictures $USER@$BACKUP_SERVER:"~/$NAME/" 
-        echo -e "${RESET}"
-    fi
+    echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Restoring everything to your computer ##${RESET}"
+    echo -en "${MAGENTA}"
+    rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME/" ~/
+    echo -e "${RESET}"
 fi
-
-if [[ "$1" == "--all" || "$1" == "-a" ]];
+if [[ "$1" == "-t" || "$2" == "--tidy" ]]
   then
-    if [[ "$2" == "-r" || "$2" == "--restore" ]]
-      then
-        echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Restoring everything to your computer ##${RESET}"
-	      echo -en "${MAGENTA}"
-        rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME/" ~/
-        echo -e "${RESET}"
-    fi
-    if [[ "$2" == "-t" || "$2" == "--tidy" ]]
-      then
-        echo -e "${BOLD}${RED}${UNDERLINE} ## Backing up and deleting old Content ## ${RESET}"
-        echo -en "${RED}"
-        rsync ${RSYNC_OPTIONS}  --exclude '.MacOSX' --delete  ~/ $USER@$BACKUP_SERVER:"~/$NAME/"
-        echo -e "${RESET}"
-    fi
-    if [[ "$2" == "-w" || "$2" == "--wipe" ]]
-      then
-        echo -e "${BOLD}${RED}${UNDERLINE} ## DELETING ALL DATA FROM SERVER ## ${RESET}"
-      	echo -en "${RED}Interrupt to cancel within 5 seconds. control+c"
-        sleep 5
-        echo "WIPING DATA"
-      	ssh $USER@$BACKUP_SERVER "rm -rf $NAME"
-      	echo -e "${RESET}"
-    fi
-    if [[ "$2" == "-e" || "$2" == "--encrypt" ]] 
-      then
-        echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Encrypting Home Folder ## ${RESET}"
-        echo -en "${MAGENTA}"
-        zip -ejr /tmp/all.zip ~/
-        rsync ${RSYNC_OPTIONS} /tmp/all.zip $USER@$BACKUP_SERVER:"~/$NAME-encrypted/" 
-        rm /tmp/all.zip
-        echo -e "${RESET}"
-    fi
-    if [[ "$2" == "-d" || "$2" == "--decrypt" ]] 
-      then
-        echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Restoring Encrypted Home Directory ## ${RESET}"
-        echo -en "${MAGENTA}"
-        rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME-encrypted/all.zip" /tmp/all.zip
-        unzip /tmp/all.zip
-        echo -e "${RESET}"
-    fi
-    if [[ "$2" == "-b" || "$2" == "--backup" || "$2x" == "x" ]] 
-      then
-        echo -e "${BOLD}${CYAN}${UNDERLINE} ## Backing up everything ## ${RESET}"
-      	echo -en "${CYAN}"
-      	rsync ${RSYNC_OPTIONS} --exclude '.MacOSX'  ~/ $USER@$BACKUP_SERVER:"~/$NAME/"	
-      	echo -e "${RESET}"
-    fi
+    echo -e "${BOLD}${RED}${UNDERLINE} ## Backing up and deleting old Content ## ${RESET}"
+    echo -en "${RED}"
+    rsync ${RSYNC_OPTIONS}  --exclude 'Library' --exclude '.MacOSX' --delete  ~/ $USER@$BACKUP_SERVER:"~/$NAME/"
+    echo -e "${RESET}"
+fi
+if [[ "$1" == "-w" || "$2" == "--wipe" ]]
+  then
+    echo -e "${BOLD}${RED}${UNDERLINE} ## DELETING ALL DATA FROM SERVER ## ${RESET}"
+  	echo -en "${RED}Interrupt to cancel within 5 seconds. control+c"
+    sleep 5
+    echo "WIPING DATA"
+  	ssh $USER@$BACKUP_SERVER "rm -rf $NAME"
+  	echo -e "${RESET}"
+fi
+if [[ "$1" == "-e" || "$2" == "--encrypt" ]] 
+  then
+    echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Encrypting Home Folder ## ${RESET}"
+    echo -en "${MAGENTA}"
+    zip -ejr /tmp/all.zip ~/
+    rsync ${RSYNC_OPTIONS} /tmp/all.zip $USER@$BACKUP_SERVER:"~/$NAME-encrypted/" 
+    rm /tmp/all.zip
+    echo -e "${RESET}"
+fi
+if [[ "$1" == "-d" || "$2" == "--decrypt" ]] 
+  then
+    echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Restoring Encrypted Home Directory ## ${RESET}"
+    echo -en "${MAGENTA}"
+    rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME-encrypted/all.zip" /tmp/all.zip
+    unzip /tmp/all.zip
+    echo -e "${RESET}"
+fi
+if [[ "$1" == "-b" || "$2" == "--backup" || "$2x" == "x" ]] 
+  then
+    echo -e "${BOLD}${CYAN}${UNDERLINE} ## Backing up everything ## ${RESET}"
+  	echo -en "${CYAN}"
+  	rsync ${RSYNC_OPTIONS} --exclude 'Library' --exclude '.MacOSX'  ~/ $USER@$BACKUP_SERVER:"~/$NAME/"	
+  	echo -e "${RESET}"
 fi
 
 ## END BACKUP PROGRAM ## 
