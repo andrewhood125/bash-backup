@@ -58,16 +58,11 @@ fi
 if [[ "$1x" == "x" ]];
   then
     echo -e "\n${BOLD}Automates backup process for content in your home folder to a specified server. Before first run you must configure your username and server address.${RESET}\n"
-    echo -e "Usage ./backup {-m,--music|-p,--pictures|-a,--all} {-b,--backup|-d,--delete|-r,--restore}\n"
-    echo "-m,--music	Backup the entire Music folder."
-    echo "-p,--pictures	Backup the entire Pictures folder."
-    echo "-a,--all	Backup your entire home directory"
+    echo -e "Usage ./backup {-b,--backup|-r,--restore}\n"
     echo "-b,--backup   Backup files on this computer to the server. This is the default option."
     echo "-t,--tidy	  Delete files on the server that are no longer present on this machine."
     echo "-w,--wipe   Delete files from server."
     echo "-r,--restore 	Restore files that exist on the server but are no longer present on this machine."
-    echo "-e,--encrypt  Zip and encrypt the files then send to server."
-    echo "-d,--decrypt  Restore encrypted information to this machine."
     echo -e "\nCopyright Andrew Hood, 2013\n"
 fi
 ## END USAGE ##
@@ -105,23 +100,6 @@ if [[ "$1" == "-w" || "$2" == "--wipe" ]]
   	ssh $USER@$BACKUP_SERVER "rm -rf $NAME"
   	echo -e "${RESET}"
 fi
-# if [[ "$1" == "-e" || "$2" == "--encrypt" ]] 
-#  then
-#    echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Encrypting Home Folder ## ${RESET}"
-#    echo -en "${MAGENTA}"
-#    zip -ejr /tmp/all.zip ~/
-#    rsync ${RSYNC_OPTIONS} /tmp/all.zip $USER@$BACKUP_SERVER:"~/$NAME-encrypted/" 
-#    rm /tmp/all.zip
-#    echo -e "${RESET}"
-#fi
-#if [[ "$1" == "-d" || "$2" == "--decrypt" ]] 
-#  then
-#    echo -e "${BOLD}${MAGENTA}${UNDERLINE} ## Restoring Encrypted Home Directory ## ${RESET}"
-#    echo -en "${MAGENTA}"
-#    rsync ${RSYNC_OPTIONS} $USER@$BACKUP_SERVER:"~/$NAME-encrypted/all.zip" /tmp/all.zip
-#    unzip /tmp/all.zip
-#    echo -e "${RESET}"
-#fi
 if [[ "$1" == "-b" || "$2" == "--backup" ]] 
   then
     echo -e "${BOLD}${CYAN}${UNDERLINE} ## Backing up everything ## ${RESET}"
